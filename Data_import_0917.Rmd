@@ -1,0 +1,152 @@
+---
+title: "Data_import"
+output: github_document
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+getwd()
+##[1] "C:/Users/wshin/OneDrive/Desktop/24 FALL/Classes/P8105/Week_3/data_import_0917"
+
+Shorthand	Meaning
+~	Home directory
+.	Current working directory
+..	One directory up from current working directory
+../..	Two directories up from current working directory
+
+litters_df = read_csv("FAS_litters.csv")
+
+names(litters_df)
+
+
+litters_df = janitor::clean_names(litters_df)
+
+##This converts to lower snake case.
+
+names(litters_df)
+
+pups_df = read_csv("FAS_pups.csv")
+#This is relative path
+
+getwd()
+
+pups_df = read_csv("C:/Users/wshin/OneDrive/Desktop/24 FALL/Classes/P8105/Week_3/data_import_0917/FAS_pups.csv")
+#This is absolute path
+
+Try to be familiar with the relative path
+
+litters_df
+tail(litters_df, 5)
+
+skimr::skim(litters_df)
+
+view(litters_df)
+
+col_names: usually TRUE. If FALSE, column names are X1, X1, … . You can also supply column names.
+na: string vector containing character expressions for missing values.
+skip: number of rows to skip before reading data.
+
+litters_df = 
+    read_csv(file = "FAS_litters.csv",
+    skip = 10, col_names = FALSE)
+
+#skips the first 10 rows, col_names are false they are not the names
+#skipping might be important for variable names
+
+head(litters_df)
+
+litters_df = 
+    read_csv(
+        file = "FAS_litters.csv",
+        na = c(".", "NA", ""))
+#remove any missing data
+
+pull(litters_df, gd0_weight)
+
+#what if we code 'group' as a factor variable?
+
+litters_df = 
+    read_csv(file = "FAS_litters.csv",
+        na = c(".", "NA", ""),
+    col_types = cols(
+      Group = col_factor()
+      )
+    )
+
+#check
+litters_df
+
+# set the variable type
+litters_df = 
+    read_csv(file = "FAS_litters.csv",
+        na = c(".", "NA", ""),
+    col_types = cols(
+      Group = col_character(),
+      `Litter Number` = col_character(),
+      `GD0 weight` = col_double(),
+      `GD18 weight` = col_double(),
+      `GD of Birth` = col_integer(),
+      `Pups born alive` = col_integer(),
+      `Pups dead @ birth` = col_integer(),
+      `Pups survive` = col_integer()
+    )
+  )
+
+tail(litters_df)
+
+# you could focus the things that are difficult like this
+
+litters_df = 
+    read_csv(file = "FAS_litters.csv",
+        na = c(".", "NA", ""),
+    col_types = cols(
+      Group = col_factor()
+    )
+)
+
+head(litters_df)
+
+litters_df = 
+    read_csv(file = "FAS_pups.csv",
+        na = c(".", "NA", ""), col_types="fddddd")
+
+view(litters_df)  
+
+head(litters_df)
+
+#Excel
+#can select the sheet by sheet = x
+library(readxl)
+
+mlb11_df = read_excel("mlb11.xlsx", n_max = 20, sheet = 'mlb11')
+
+head(mlb11_df, 5)
+
+#SAS, Stata, SPSS
+library(haven)
+
+pulse_df = read_sas("public_pulse_data.sas7bdat")
+
+head(pulse_df, 5)
+
+##Never use read.csv()
+
+pups_1 = read_csv("FAS_pups.csv")
+
+pups_2 = read.csv("FAS_pups.csv")
+
+view(pups_1)
+
+view(pups_2)
+
+pups_1
+
+pups_2
+
+pups_1$S
+
+pups_2$S
+
+#Don't use $ as well, if I am using $ sign writing the code, something is wrong in the logic
